@@ -1,24 +1,12 @@
 import pyodbc
+server='HYDTRNG14\SQLEXPRESS'
+database='python'
+username='sa'
+password='nithish@780'
+cxcn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 
-mydb = pyodbc.connect(
-  host="HYDTRNG14\SQLEXPRESS",
-  user="SONATA\hydtrng",
-  database="python"
-)
 
-
-mycursor = mydb.cursor()
-
-# mycursor.execute("CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))")
-sql = "INSERT INTO customer (name, address) VALUES (%s, %s)"
-val = ("gdsgdfgfdg", "Hyd")
-mycursor.execute(sql, val)
-mydb.commit()
-print(mycursor.rowcount, "record inserted.")
-
-mycursor.execute("SELECT * FROM customer")
-myresult = mycursor.fetchall()
-print("Name |  Address")
-for x in myresult:
-  print(x[0] +" | " + x[1])
-  print(type(x))
+mycursor=cxcn.cursor()
+res=mycursor.execute("select empno,sal,comm,(sal+comm) as salary from emp")
+myrecs=res.fetchall();
+print(myrecs)
